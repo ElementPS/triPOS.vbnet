@@ -1,20 +1,19 @@
-﻿
-Imports System.Xml
+﻿Imports System.Xml
 Imports System.Net.Http
 
 Public Class triPOSWebRequest
-    Public Shared Function DotriPOSRequest(json As String, url As String) As HttpResponseMessage
 
-        Dim TriPosConfigFilePath As String = "C:\Program Files (x86)\Vantiv\TriPOS Service\TriPOS.config"
+    Public Property Headers() As String
+        Get
+            Return m_Headers
+        End Get
+        Set
+            m_Headers = Value
+        End Set
+    End Property
+    Private m_Headers As String
 
-        Dim triPosConfig = New XmlDocument()
-        triPosConfig.Load(TriPosConfigFilePath)
-
-        Dim developerKeys = triPosConfig.GetElementsByTagName("developerKey")
-        Dim developerKey As String = developerKeys(0).InnerXml
-
-        Dim developerSecrets = triPosConfig.GetElementsByTagName("developerSecret")
-        Dim developerSecret As String = developerSecrets(0).InnerXml
+    Public Function DotriPOSRequest(json As String, url As String, developerKey As String, developerSecret As String, contentType As String) As HttpResponseMessage
 
         Dim respMessage As HttpResponseMessage = Nothing
         Using httpClient = New HttpClient()
@@ -23,12 +22,13 @@ Public Class triPOSWebRequest
 
             message.Headers.Add("tp-authorization", authorizationHeader.ToString())
             message.Headers.Add("tp-application-id", "1234")
-            message.Headers.Add("tp-application-name", "triPOS.CSharp")
+            message.Headers.Add("tp-application-name", "triPOS.vbnet")
             message.Headers.Add("tp-application-version", "1.0.0")
             message.Headers.Add("tp-return-logs", "false")
-            message.Headers.Add("accept", "application/json")
-            message.Content = New StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            message.Headers.Add("accept", contentType)
+            message.Content = New StringContent(json, System.Text.Encoding.UTF8, contentType)
 
+            m_Headers = message.Headers.ToString()
 
             Dim response As Task(Of HttpResponseMessage) = httpClient.SendAsync(message)
             response.Wait()
