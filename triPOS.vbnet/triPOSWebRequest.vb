@@ -27,6 +27,8 @@ Public Class triPOSWebRequest
             message.Headers.Add("tp-application-version", "1.0.0")
             message.Headers.Add("tp-return-logs", "false")
             message.Headers.Add("accept", "application/json")
+            message.Content = New StringContent(json, System.Text.Encoding.UTF8, "application/json")
+
 
             Dim response As Task(Of HttpResponseMessage) = httpClient.SendAsync(message)
             response.Wait()
