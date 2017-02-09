@@ -78,11 +78,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.vb" />
+    <Compile Include="ApiError.vb" />
+    <Compile Include="ApiLink.vb" />
+    <Compile Include="ApiWarning.vb" />
     <Compile Include="AuthorizationHeader.vb" />
     <Compile Include="Configuration.vb" />
     <Compile Include="HttpUtility.vb" />
     <Compile Include="HttpValue.vb" />
     <Compile Include="HttpValueCollection.vb" />
+    <Compile Include="Processor.vb" />
+    <Compile Include="ProcessorResponseCode.vb" />
+    <Compile Include="SaleResponse.vb" />
+    <Compile Include="Signature.vb" />
+    <Compile Include="SignatureBuild.vb" />
+    <Compile Include="SignaturePoint.vb" />
     <Compile Include="triPOSVBNet.vb">
       <SubType>Form</SubType>
     </Compile>

@@ -28,6 +28,9 @@ Public Class Form1
         Dim actualResponse As String = readAsync.Result
         txtResponse.Text = BeautifyResponse(actualResponse, contentType)
         txtHeaders.Text = triPOSWebRequest.Headers
+        Dim respObj As SaleResponse = JsonConvert.DeserializeObject(Of SaleResponse)(actualResponse)
+
+        DisplaySignature(respObj)
 
     End Sub
 
@@ -47,8 +50,20 @@ Public Class Form1
         txtRequest.Text = String.Empty
         txtResponse.Text = String.Empty
         txtHeaders.Text = String.Empty
+        pictureBoxSignature.Image = Nothing
     End Sub
 
+    Private Sub DisplaySignature(saleResponse As SaleResponse)
+        Dim sig = New SignatureBuild()
+        sig.SetFormat(saleResponse.Signature.SignatureFormat)
+        Dim bytes As Byte() = saleResponse.Signature.SignatureData
+        sig.SetData(bytes)
+
+        Dim signatureImage As Bitmap = sig.GetSignatureBitmap(10)
+        Me.pictureBoxSignature.SizeMode = PictureBoxSizeMode.StretchImage
+        Me.pictureBoxSignature.Image = signatureImage
+        Me.pictureBoxSignature.Show()
+    End Sub
 
     Private Function BeautifyResponse(actualResponse As String, contentType As String) As String
         Dim response As String = String.Empty
